@@ -845,3 +845,16 @@ $RECYCLE.BIN/
 # Additional files built by Visual Studio
 
 # End of https://www.toptal.com/developers/gitignore/api/rider,unrealengine,c++,csharp,visualstudio,git,windows,linux,macos
+
+### Developer Plugins ###
+Plugins/Developer/*
+
+### Not Important ###
+Content/StarterContent/*
+Content/Megascans/*
+Content/MedievalDungeon/*
+Content/AnimalVarietyPack/*
+Content/AncientContent/*
+Content/__ExternalActors__/*
+Content/__ExternalObjects__/*
+Content/MSPresets/*
