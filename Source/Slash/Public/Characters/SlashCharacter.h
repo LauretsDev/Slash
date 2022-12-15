@@ -83,6 +83,10 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category=Montages)
 	UAnimMontage* AttackMontage;
 
+	UFUNCTION(BlueprintCallable)
+	void AttackEnd();
+	bool CanAttack();
+
 public:
 	FORCEINLINE void SetOverlappingItem(AItem* Item) { OverlappingItem = Item; }
 	FORCEINLINE ECharacterState GetCharacterState() const { return CharacterState; }

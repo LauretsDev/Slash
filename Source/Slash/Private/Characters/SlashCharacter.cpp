@@ -80,16 +80,19 @@ void ASlashCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 
 void ASlashCharacter::Move(const FInputActionValue& Value)
 {
-	FVector2D MovementVector = Value.Get<FVector2D>();
+	if (ActionState != EActionState::EAS_Attacking)
+	{
+		FVector2D MovementVector = Value.Get<FVector2D>();
 	
-	const FRotator ControlRotation = GetControlRotation();
-	const FRotator YawRotation(0.f, ControlRotation.Yaw, 0.f);
+		const FRotator ControlRotation = GetControlRotation();
+		const FRotator YawRotation(0.f, ControlRotation.Yaw, 0.f);
 
-	const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
-	const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
+		const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
+		const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
 
-	AddMovementInput(RightDirection, MovementVector.X);
-	AddMovementInput(ForwardDirection, MovementVector.Y);
+		AddMovementInput(RightDirection, MovementVector.X);
+		AddMovementInput(ForwardDirection, MovementVector.Y);
+	}
 }
 
 void ASlashCharacter::Look(const FInputActionValue& Value)
@@ -111,7 +114,7 @@ void ASlashCharacter::EKeyPressed()
 
 void ASlashCharacter::Attack()
 {
-	if (ActionState == EActionState::EAS_Unoccupied)
+	if (CanAttack())
 	{
 		ActionState = EActionState::EAS_Attacking;
 		PlayAttackMontage();
@@ -143,4 +146,14 @@ void ASlashCharacter::PlayAttackMontage()
 		}
 		AnimInstance->Montage_JumpToSection(SectionName, AttackMontage);
 	}
+}
+
+void ASlashCharacter::AttackEnd()
+{
+	ActionState = EActionState::EAS_Unoccupied;
+}
+
+bool ASlashCharacter::CanAttack()
+{
+	return ActionState == EActionState::EAS_Unoccupied && CharacterState != ECharacterState::ECS_Unequipped;
 }
