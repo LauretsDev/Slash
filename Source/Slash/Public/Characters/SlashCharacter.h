@@ -14,6 +14,7 @@ class UCameraComponent;
 class USpringArmComponent;
 class UGroomComponent;
 class AItem;
+class UAnimMontage;
 
 UCLASS()
 class SLASH_API ASlashCharacter : public ACharacter
@@ -49,11 +50,15 @@ protected:
 	UPROPERTY(EditAnywhere, Category=Input)
 	UInputAction* DodgeAction;
 
+	// Input functions
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
 	void EKeyPressed();
 	void Attack();
 	void Dodge();
+
+	// Montage functions
+	void PlayAttackMontage();
 
 private:
 	UPROPERTY(VisibleAnywhere)
@@ -72,6 +77,11 @@ private:
 	AItem* OverlappingItem;
 
 	ECharacterState CharacterState = ECharacterState::ECS_Unequipped;
+	EActionState ActionState = EActionState::EAS_Unoccupied;
+
+	// Animation Montages
+	UPROPERTY(EditDefaultsOnly, Category=Montages)
+	UAnimMontage* AttackMontage;
 
 public:
 	FORCEINLINE void SetOverlappingItem(AItem* Item) { OverlappingItem = Item; }
